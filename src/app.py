@@ -137,21 +137,23 @@ def get_users():
 def get_user_favorites():
     user_id = 1
 
-    favorites = Favorite.query.filter_by(user_id=user_id).all()
-    favorites_serialized = []
-    for favorite in favorites:
-        if favorite.people:
-            favorites_serialized.append({
-                "id": favorite.id,
-                "type": "people",
-                "name": favorite.people.name
-            })
-        elif favorite.planet:
-            favorites_serialized.append({
-                "id": favorite.id,
-                "type": "planet",
-                "name": favorite.planet.name
-            })
+    favorites = User.query.get(user_id).favorites
+    favorites_serialized = [favorite.serialize() for favorite in favorites]
+    return jsonify(favorites_serialized), 200
+    # favorites_serialized = []
+    # for favorite in favorites:
+    #     if favorite.people:
+    #         favorites_serialized.append({
+    #             "id": favorite.id,
+    #             "type": "people",
+    #             "name": favorite.people.name
+    #         })
+    #     elif favorite.planet:
+    #         favorites_serialized.append({
+    #             "id": favorite.id,
+    #             "type": "planet",
+    #             "name": favorite.planet.name
+    #         })
 
     return jsonify(favorites_serialized), 200
 
